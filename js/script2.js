@@ -3,8 +3,8 @@
 
 var locations = [ 
 	{
-		lat: 40.681229,
-		lng: -73.9781,
+		lat: 40.681412,
+		lng: -73.975956,
 		name: "Home",
 		description: 'my home, 449 bergen st',
 		descVisible: true,
@@ -19,13 +19,21 @@ var locations = [
 		listVisible: true
 	},
 	{
-		lat: 40.674829,
-		lng: -73.978705,
-		name: "Food Coop",
-		description: 'where I buy food 2',
+		lat: 40.681402,
+		lng: -73.977040,
+		name: "Blue Sky Bakery",
+		description: 'muffins for days',
 		descVisible: false,
 		listVisible: true
 	},
+	{
+		lat: 40.682329,
+		lng: -73.986354,
+		name: "Retrofit Vintage Guitars",
+		description: 'good selection of used guitars',
+		descVisible: false,
+		listVisible: true
+	}
 	
 ];
 
@@ -39,6 +47,9 @@ function Location(data) {
 	self.description = data.description;
 	self.descVisible = ko.observable(data.descVisible);
 	self.listVisible = ko.observable(data.listVisible);
+	
+
+
 }
 
 

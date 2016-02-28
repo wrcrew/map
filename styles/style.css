@@ -3,6 +3,24 @@
 	font-size: 15pt;
 }
 
+div.description {
+	font: 15px Arial;
+	position:fixed;
+	background-color: #ffffff;
+	opacity: 0.8;
+	top: 0;
+	right: 0;
+}
+
+div.itemlist {
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: #ffffff;
+	opacity: 0.8;
+	font: 20px arial;
+}
+
 
 
 
