@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>neighborhood map 2</title>
+
+	<link rel="stylesheet" type="text/css" href="styles/style.css">
+
+	<style type="text/css">
+	      html, body { height: 100%; margin: 0; padding: 0; }
+	      #map { height: 50%; width: 80%; }
+	</style>	
+
+</head>
+
+
+
+
+<body>
+
+<div id="map">
+				
+</div>
+
+	<div id="container">
+
+		<div id="list">
+
+				<ul data-bind="foreach: locationList" id="location-list">
+		        	<li class="none" data-bind="text: name, click: $parent.showDesc, visible: listVisible"></li>
+
+		    	</ul>
+
+		</div>
+
+		<ul data-bind="foreach: locationList" id="desc-list">
+			<li id="desc" class="none" data-bind="text: description, visible: descVisible"></li>
+		</ul>
+
+
+		<form data-bind="submit: $root.execSearch.bind($data, searchValue)">
+			<input type="text" id="searchValue"></input>
+			<button type="submit">Submit</button>
+			<button data-bind="click: $root.clearSearch">Clear</button>
+		</form>
+		
+
+	</div>
+
+
+	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAm7LNFXCU_13JUTMZCVb3Y8GsPPEGrLbI"></script>
+
+			
+			<script src="js/knockout-3.4.0.js"></script>
+			<script src="js/script2.js"></script>
+			<script src="js/jquery-2.2.0.min.js"></script>
+</body>
+
+</html>
