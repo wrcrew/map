@@ -7,7 +7,7 @@ var locations = [
 		lng: -73.975956,
 		name: "Home",
 		description: 'my home, 449 bergen st',
-		descVisible: true,
+		descVisible: false,
 		listVisible: true
 	},
 	{
@@ -47,7 +47,7 @@ function Location(data) {
 	self.description = data.description;
 	self.descVisible = ko.observable(data.descVisible);
 	self.listVisible = ko.observable(data.listVisible);
-	self.wiki = ko.observable('blank');
+	self.wiki = ko.observableArray(['waiting for articles...']);
 
 
 }
@@ -93,45 +93,6 @@ function viewModel() {
 			  	});
 			} 
 
-
-//code to initialize articles from the NYT
-
-	/*var articleArray = [];
-
-		for (i = 0; i < locations.length; i++) {
-			//console.log(i);
-
-			$.getJSON("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + self.locationList()[i].name + "&api-key=7334dd2f4e3de2342120fddbefbf0b37:11:74057023&fl=snippet", function(data) {
-				
-				articleArray.push(data);
-				//console.log(data);
-				//console.log(i);
-      			var articles = data.response.docs;
-
-      	
-      			
-        			var article = articles[1];
-
-        			//console.log(article);
-
-        			//console.log(self.locationList().wiki);
-        			//console.log(i);
-        			//self.locationList()[i].wiki = article.snippet;
-        			//console.log(articleArray);
-        			//console.log(articleArray[1].response.docs[1].snippet);
-
-        			for (j = 0; j < locations.length; j++) {
-
-        				//console.log(articleArray[j].response.docs[j].snippet);
-        				console.log(articleArray);
-        				self.locationList().wiki = articleArray[j].response.docs[j].snippet;
-        			}
-
-    		});
-    	}
-
-    	//console.log(articleArray);*/
-
 	
 //code to toggle whether an item's description should appear or not
 
@@ -140,27 +101,16 @@ function viewModel() {
 		//Load articles from NYT
 
 		$.getJSON("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + clickedLocation.name + "&api-key=7334dd2f4e3de2342120fddbefbf0b37:11:74057023&fl=snippet", function(data) {
-				
       			
-				clickedLocation.wiki(data.response.docs[0].snippet);
-      			//console.log(data.response.docs[0].snippet);
-      			
-        		//console.log(clickedLocation.wiki);
-
-        		console.log(self.locationList());
-
-        			//console.log(article);
-
-        			//console.log(self.locationList().wiki);
-        			//console.log(i);
-        			//self.locationList()[i].wiki = article.snippet;
-        			//console.log(articleArray);
-        			//console.log(articleArray[1].response.docs[1].snippet);
-        			//self.locationList().wiki = articleArray[j].response.docs[j].snippet;
-        			
-
+      			clickedLocation.wiki.pop();
+      			for (j =0;j<4;j++) {
+      				clickedLocation.wiki.push(data.response.docs[j].snippet);
+      			}
+				//clickedLocation.wiki(data.response.docs[0].snippet);
+ 
     		});
 
+		//set all locations to visible=false, then set the clickedLocation to visible=true
 
 		for (i = 0; i < locations.length; i++) {
 			self.locationList()[i].descVisible(false);
@@ -169,6 +119,8 @@ function viewModel() {
 		
 
 	}
+
+//code for when a search is executed
 
 	self.execSearch = function() {
 
@@ -186,11 +138,13 @@ function viewModel() {
 
 	}
 
+//code for when a search is cleared
+
 	self.clearSearch = function() {
 
 		for (i = 0; i < locations.length; i++) {
 			self.locationList()[i].listVisible(true); 
-			console.log("go"); }
+			 }
 		}
 	
 

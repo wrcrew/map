@@ -8,8 +8,10 @@ div.description {
 	position:fixed;
 	background-color: #ffffff;
 	opacity: 0.8;
-	top: 0;
-	right: 0;
+	top: 15px;
+	right: 15px;
+	width: 300px;
+
 }
 
 div.itemlist {
@@ -31,6 +33,23 @@ ul li {
     list-style: none;
     padding: 5px;
     margin: 5px;
+}
+
+
+div.wiki, div.desc, h4 {
+	padding: 5px;
+	margin: 1px;
+}
+
+div.form {
+	padding: 5px;
+	margin: 5px;
+}
+
+h3 {
+	padding:5px;
+	margin: 5px;
+	text-align: center;
 }
 
 

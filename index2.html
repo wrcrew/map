@@ -29,17 +29,23 @@
 		        	<li class="none" data-bind="text: name, click: $parent.showDesc, visible: listVisible"></li>
 
 		    	</ul>
-		 <form data-bind="submit: $root.execSearch.bind($data, searchValue)">
-			<input type="text" id="searchValue"></input>
-			<button type="submit">Submit</button>
-			<button data-bind="click: $root.clearSearch">Clear</button>
-		</form>	
+			<div class="form">
+				<form data-bind="submit: $root.execSearch.bind($data, searchValue)">
+					<input type="text" id="searchValue"></input>
+					<button type="submit">Submit</button>
+					<button data-bind="click: $root.clearSearch">Clear</button>
+				</form>
+			</div>
 		</div>
 
 		<div data-bind="foreach: locationList" id="desc-list" class="description">
 			<div id="descItem" class="none" data-bind="visible: descVisible">
-				<div id="desc" class="none" data-bind="text: description"></div>
-				<div id="wiki" class="none" data-bind="text: wiki"></div>
+				<h4>My Description</h4>
+				<div id="desc" class="desc" data-bind="text: description"></div>
+				<h4>Articles from the New York Times</h4>
+					<div data-bind="foreach: wiki">
+						<div id="wiki" class="wiki" data-bind="text: $data"></div>
+					</div>
 			</div>
 		
 
