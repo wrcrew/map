@@ -13,7 +13,7 @@ var locations = [
 	{
 		lat: 40.674829,
 		lng: -73.976705,
-		name: "Food Coop",
+		name: "Park Slope Food Coop",
 		description: 'where I buy food',
 		descVisible: false,
 		listVisible: true
@@ -47,7 +47,7 @@ function Location(data) {
 	self.description = data.description;
 	self.descVisible = ko.observable(data.descVisible);
 	self.listVisible = ko.observable(data.listVisible);
-	
+	self.wiki = ko.observable('blank');
 
 
 }
@@ -92,17 +92,79 @@ function viewModel() {
 			    title: locations[i].name
 			  	});
 			} 
-		
-	
-	
 
+
+//code to initialize articles from the NYT
+
+	/*var articleArray = [];
+
+		for (i = 0; i < locations.length; i++) {
+			//console.log(i);
+
+			$.getJSON("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + self.locationList()[i].name + "&api-key=7334dd2f4e3de2342120fddbefbf0b37:11:74057023&fl=snippet", function(data) {
+				
+				articleArray.push(data);
+				//console.log(data);
+				//console.log(i);
+      			var articles = data.response.docs;
+
+      	
+      			
+        			var article = articles[1];
+
+        			//console.log(article);
+
+        			//console.log(self.locationList().wiki);
+        			//console.log(i);
+        			//self.locationList()[i].wiki = article.snippet;
+        			//console.log(articleArray);
+        			//console.log(articleArray[1].response.docs[1].snippet);
+
+        			for (j = 0; j < locations.length; j++) {
+
+        				//console.log(articleArray[j].response.docs[j].snippet);
+        				console.log(articleArray);
+        				self.locationList().wiki = articleArray[j].response.docs[j].snippet;
+        			}
+
+    		});
+    	}
+
+    	//console.log(articleArray);*/
+
+	
+//code to toggle whether an item's description should appear or not
 
 	self.showDesc = function(clickedLocation) {
+
+		//Load articles from NYT
+
+		$.getJSON("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + clickedLocation.name + "&api-key=7334dd2f4e3de2342120fddbefbf0b37:11:74057023&fl=snippet", function(data) {
+				
+      			
+				clickedLocation.wiki(data.response.docs[0].snippet);
+      			//console.log(data.response.docs[0].snippet);
+      			
+        		//console.log(clickedLocation.wiki);
+
+        		console.log(self.locationList());
+
+        			//console.log(article);
+
+        			//console.log(self.locationList().wiki);
+        			//console.log(i);
+        			//self.locationList()[i].wiki = article.snippet;
+        			//console.log(articleArray);
+        			//console.log(articleArray[1].response.docs[1].snippet);
+        			//self.locationList().wiki = articleArray[j].response.docs[j].snippet;
+        			
+
+    		});
+
 
 		for (i = 0; i < locations.length; i++) {
 			self.locationList()[i].descVisible(false);
 		}
-
 		clickedLocation.descVisible(true);
 		
 
@@ -136,25 +198,6 @@ function viewModel() {
 }
 
 
-
-
-
-
-
-
-// VIEW -->
-
-var view = function() {
-	var self = this;
-
-
-//code to create the initial Google Map
-
-	
-
-
-
-}
 
 ko.applyBindings(new viewModel());
 
