@@ -19,6 +19,18 @@ div.itemlist {
 	background-color: #ffffff;
 	opacity: 0.8;
 	font: 20px arial;
+	padding-bottom: 5px;
+}
+
+ul {
+	padding: 5px;
+}
+
+ul li {
+    background: #cce5ff;
+    list-style: none;
+    padding: 5px;
+    margin: 5px;
 }
 
 
