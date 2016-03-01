@@ -99,24 +99,28 @@ function viewModel() {
 	self.showDesc = function(clickedLocation) {
 
 		//Load articles from NYT
+		console.log(clickedLocation.wiki().length);
+		if (clickedLocation.wiki().length < 2) {
+			
 
-		$.getJSON("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + clickedLocation.name + "&api-key=7334dd2f4e3de2342120fddbefbf0b37:11:74057023", function(data) {
-      			
-      			clickedLocation.wiki.pop();
-      			console.log(data.response.docs);
-      			for (j = 0; j < data.response.docs.length; j++) {
-      				clickedLocation.wiki.push(data.response.docs[j]);
-      				
-      			}
- 
-    		});
+			$.getJSON("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + clickedLocation.name + "&api-key=7334dd2f4e3de2342120fddbefbf0b37:11:74057023", function(data) {
+	      			
+	      			clickedLocation.wiki.pop();
+	      			
+	      			for (j = 0; j < data.response.docs.length; j++) {
+	      				clickedLocation.wiki.push(data.response.docs[j]);
+	      				
+	      			}
+	 
+	    		});
+		} 
 
-		//set all locations to visible=false, then set the clickedLocation to visible=true
+			//set all locations to visible=false, then set the clickedLocation to visible=true
 
-		for (i = 0; i < locations.length; i++) {
-			self.locationList()[i].descVisible(false);
-		}
-		clickedLocation.descVisible(true);
+			for (i = 0; i < locations.length; i++) {
+				self.locationList()[i].descVisible(false);
+			}
+			clickedLocation.descVisible(true);
 		
 
 	}
