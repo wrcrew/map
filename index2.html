@@ -26,10 +26,13 @@
 		<div id="list" class="itemlist">
 				<h3>Locations</h3>
 				<ul data-bind="foreach: locationList" id="location-list">
-		        	<li class="none" data-bind="text: name, click: $parent.showDesc, visible: listVisible"></li>
+		        	<div data-bind="css: { selected: descVisible }">
+		        		<li class="none" data-bind="text: name, click: $parent.showDesc, visible: listVisible"></li>
+		        	</div>
 
 		    	</ul>
 			<div class="form">
+				Search:
 				<form data-bind="submit: $root.execSearch.bind($data, searchValue)">
 					<input type="text" id="searchValue"></input>
 					<button type="submit">Submit</button>
@@ -44,7 +47,14 @@
 				<div id="desc" class="desc" data-bind="text: description"></div>
 				<h4>Articles from the New York Times</h4>
 					<div data-bind="foreach: wiki">
-						<div id="wiki" class="wiki" data-bind="text: $data"></div>
+						<div id="wiki" class="wiki" data-bind="text: $data.snippet"></div>
+							
+							<a class="wikilink" data-bind="attr: { href: $data.web_url }">
+								Read more...
+							</a>
+							
+						</div>
+
 					</div>
 			</div>
 		

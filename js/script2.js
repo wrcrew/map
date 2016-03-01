@@ -6,7 +6,7 @@ var locations = [
 		lat: 40.681412,
 		lng: -73.975956,
 		name: "Home",
-		description: 'my home, 449 bergen st',
+		description: 'This is where I chose to live for the last 2 years or so.',
 		descVisible: false,
 		listVisible: true
 	},
@@ -14,7 +14,7 @@ var locations = [
 		lat: 40.674829,
 		lng: -73.976705,
 		name: "Park Slope Food Coop",
-		description: 'where I buy food',
+		description: 'Yes it is a cult, but still the best place to buy food in the area',
 		descVisible: false,
 		listVisible: true
 	},
@@ -22,15 +22,15 @@ var locations = [
 		lat: 40.681402,
 		lng: -73.977040,
 		name: "Blue Sky Bakery",
-		description: 'muffins for days',
+		description: 'A great place to buy muffins and coffee.',
 		descVisible: false,
 		listVisible: true
 	},
 	{
 		lat: 40.682329,
 		lng: -73.986354,
-		name: "Retrofit Vintage Guitars",
-		description: 'good selection of used guitars',
+		name: "Retrofret Vintage Guitars",
+		description: 'Good selection of used guitars - Gibson, Martin, Harmony etc.',
 		descVisible: false,
 		listVisible: true
 	}
@@ -100,13 +100,14 @@ function viewModel() {
 
 		//Load articles from NYT
 
-		$.getJSON("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + clickedLocation.name + "&api-key=7334dd2f4e3de2342120fddbefbf0b37:11:74057023&fl=snippet", function(data) {
+		$.getJSON("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + clickedLocation.name + "&api-key=7334dd2f4e3de2342120fddbefbf0b37:11:74057023", function(data) {
       			
       			clickedLocation.wiki.pop();
-      			for (j =0;j<4;j++) {
-      				clickedLocation.wiki.push(data.response.docs[j].snippet);
+      			console.log(data.response.docs);
+      			for (j = 0; j < data.response.docs.length; j++) {
+      				clickedLocation.wiki.push(data.response.docs[j]);
+      				
       			}
-				//clickedLocation.wiki(data.response.docs[0].snippet);
  
     		});
 
