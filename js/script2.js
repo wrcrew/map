@@ -1,4 +1,3 @@
-
 // MODEL -->
 
 var locations = [ 
@@ -33,7 +32,16 @@ var locations = [
 		description: 'Good selection of used guitars - Gibson, Martin, Harmony etc.',
 		descVisible: false,
 		listVisible: true
+	},
+	{
+		lat: 40.682705,
+		lng: -73.975013,
+		name: "Barclays Center",
+		description: 'Where one of the worst teams in the NBA, the Brooklyn Nets, play.',
+		descVisible: false,
+		listVisible: true
 	}
+
 	
 ];
 
@@ -52,111 +60,72 @@ function Location(data) {
 
 }
 
-
-
-
 // VIEW MODEL -->
-
 
 function viewModel() {
 	var self = this;
 	var map;
 
-
-//create knockout array from the locations model
-
+	//create knockout array from the locations model
 	self.locationList = ko.observableArray([]);
 	for (i = 0; i < locations.length; i++) {
 		self.locationList.push(new Location(locations[i]));	
 	}
 
+	//code to create the initial Google Map and markers
+	map = new google.maps.Map(document.getElementById('map'), {
+	    center: {lat: 40.681229, lng: -73.9781},
+	    zoom: 15
+	});
 
-//code to create the initial Google Map and markers
+	for (i = 0; i < locations.length; i++) {
+		var myLatLng = {lat: locations[i].lat, lng: locations[i].lng};
+		var marker = new google.maps.Marker({
+		    position: myLatLng,
+		    map: map,
+		    title: locations[i].name
+		  	});
+	} 
 
-	
-		map = new google.maps.Map(document.getElementById('map'), {
-		    center: {lat: 40.681229, lng: -73.9781},
-		    zoom: 15
-		  });
-	
-
-
-		for (i = 0; i < locations.length; i++) {
-
-			var myLatLng = {lat: locations[i].lat, lng: locations[i].lng};
-
-
-			var marker = new google.maps.Marker({
-			    position: myLatLng,
-			    map: map,
-			    title: locations[i].name
-			  	});
-			} 
-
-	
-//code to toggle whether an item's description should appear or not
-
+	//code to toggle whether an item's description should appear or not
 	self.showDesc = function(clickedLocation) {
 
 		//Load articles from NYT
 		console.log(clickedLocation.wiki().length);
 		if (clickedLocation.wiki().length < 2) {
-			
-
 			$.getJSON("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + clickedLocation.name + "&api-key=7334dd2f4e3de2342120fddbefbf0b37:11:74057023", function(data) {
 	      			
 	      			clickedLocation.wiki.pop();
-	      			
 	      			for (j = 0; j < data.response.docs.length; j++) {
 	      				clickedLocation.wiki.push(data.response.docs[j]);
-	      				
 	      			}
-	 
-	    		});
+	    	});
 		} 
+		//set all locations to visible=false, then set the clickedLocation to visible=true
+		for (i = 0; i < locations.length; i++) {
+			self.locationList()[i].descVisible(false);
+		}
+		clickedLocation.descVisible(true);
+	};
 
-			//set all locations to visible=false, then set the clickedLocation to visible=true
-
-			for (i = 0; i < locations.length; i++) {
-				self.locationList()[i].descVisible(false);
-			}
-			clickedLocation.descVisible(true);
-		
-
-	}
-
-//code for when a search is executed
-
+	//code for when a search is executed
 	self.execSearch = function() {
 
-		var searchValue = document.getElementById('searchValue').value
-	
-		
+		var searchValue = document.getElementById('searchValue').value;
 		for (i = 0; i < locations.length; i++) {
-
 			if (self.locationList()[i].name.search(searchValue) == -1) {
 				self.locationList()[i].listVisible(false);
 			} else { self.locationList()[i].listVisible(true); }
-
-
 		}
+	};
 
-	}
-
-//code for when a search is cleared
-
+	//code for when a search is cleared
 	self.clearSearch = function() {
-
 		for (i = 0; i < locations.length; i++) {
 			self.locationList()[i].listVisible(true); 
-			 }
 		}
-	
-
-	
+	};
 }
-
-
 
 ko.applyBindings(new viewModel());
 

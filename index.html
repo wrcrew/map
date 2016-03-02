@@ -1,79 +1,68 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>neighborhood map 2</title>
+	<head>
+		<title>neighborhood map 2</title>
 
-	<link rel="stylesheet" type="text/css" href="styles/style.css">
+		<link rel="stylesheet" type="text/css" href="styles/style.css">
 
-	<style type="text/css">
-	      html, body { height: 100%; margin: 0; padding: 0; }
-	      #map { height: 100%; width: 100%; }
-	</style>	
+		<style type="text/css">
+		      html, body { height: 100%; margin: 0; padding: 0; }
+		      #map { height: 100%; width: 100%; }
+		</style>	
 
-</head>
-
-
+	</head>
 
 
-<body>
 
-<div id="map">
-				
-</div>
 
-	<div id="container">
+	<body>
 
-		<div id="list" class="itemlist">
-				<h3>Locations</h3>
-				<ul data-bind="foreach: locationList" id="location-list">
-		        	<div data-bind="css: { selected: descVisible }">
-		        		<li class="none" data-bind="text: name, click: $parent.showDesc, visible: listVisible"></li>
-		        	</div>
-
-		    	</ul>
-			<div class="form">
-				Search:
-				<form data-bind="submit: $root.execSearch.bind($data, searchValue)">
-					<input type="text" id="searchValue"></input>
-					<button type="submit">Submit</button>
-					<button data-bind="click: $root.clearSearch">Clear</button>
-				</form>
-			</div>
+		<div id="map">			
 		</div>
+		<div id="container">
+			<div id="list" class="itemlist">
+					<h3>Locations</h3>
+					<ul data-bind="foreach: locationList" id="location-list">
+			        	<div data-bind="css: { selected: descVisible }">
+			        		<li class="none" data-bind="text: name, click: $parent.showDesc, visible: listVisible"></li>
+			        	</div>
 
-		<div data-bind="foreach: locationList" id="desc-list" class="description">
-			<div id="descItem" class="none" data-bind="visible: descVisible">
-				<h4>My Description</h4>
-				<div id="desc" class="desc" data-bind="text: description"></div>
-				<h4>Articles from the New York Times</h4>
+			    	</ul>
+				<div class="form">
+					Search:
+					<form data-bind="submit: $root.execSearch.bind($data, searchValue)">
+						<input type="text" id="searchValue">
+						<button type="submit">Submit</button>
+						<button data-bind="click: $root.clearSearch">Clear</button>
+					</form>
+				</div>
+			</div>
+
+			<div data-bind="foreach: locationList" id="desc-list" class="description">
+				<div id="descItem" class="none" data-bind="visible: descVisible">
+					<h4>My Description</h4>
+					<div id="desc" class="desc" data-bind="text: description"></div>
+					<h4>Articles from the New York Times</h4>
 					<div data-bind="foreach: wiki">
-						<div id="wiki" class="wiki" data-bind="text: $data.snippet"></div>
-							
-							<a class="wikilink" data-bind="attr: { href: $data.web_url }">
-								Read more...
-							</a>
-							
+						<div id="wiki" class="wiki" data-bind="text: $data.snippet">
 						</div>
-
+							
+						<a class="wikilink" data-bind="attr: { href: $data.web_url }">
+								Read more...
+						</a>
+							
 					</div>
-			</div>
-		
 
+				</div>
+			</div>
 		</div>
 
 
-		
-		
 
-	</div>
-
-
-	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAm7LNFXCU_13JUTMZCVb3Y8GsPPEGrLbI"></script>
-
-			<script src="js/jquery-2.2.0.min.js"></script>
-			<script src="js/knockout-3.4.0.js"></script>
-			<script src="js/script2.js"></script>
-			
-</body>
-
+		<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAm7LNFXCU_13JUTMZCVb3Y8GsPPEGrLbI"></script>
+		<script src="js/jquery-2.2.0.min.js"></script>
+		<script src="js/knockout-3.4.0.js"></script>
+		<script src="js/script2.js"></script>
+				
+	</body>
 </html>
