@@ -20,7 +20,7 @@ div.itemlist {
 	left: 10px;
 	background-color: #ffffff;
 	opacity: 0.95;
-	font: 20px arial;
+	font: .8em arial;
 	padding-bottom: 5px;
 }
 
@@ -45,7 +45,7 @@ div.wiki, div.desc, h4 {
 div.form {
 	padding: 5px;
 	margin: 5px;
-	font: 10px arial;
+	font: .6em arial;
 	color: dimgray;
 }
 
@@ -61,13 +61,13 @@ h3 {
 
 a.wikilink {
 	float: right;
-	font: 10px arial;
+	font: .6em arial;
 	text-decoration: none;
 	color: blue;
 }
 
 div.wiki {
-	font: 11px arial;
+	font: .7em arial;
 	color: dimgray;
 	margin-top: 5px;
 }
