@@ -55,23 +55,35 @@ function Location(data) {
 	self.description = data.description;
 	self.descVisible = ko.observable(data.descVisible);
 	self.listVisible = ko.observable(data.listVisible);
-	self.wiki = ko.observableArray(['waiting for articles...']);
+	self.wiki = [];
+	self.wikiString = "";
 
-	self.infowindow = new google.maps.InfoWindow({
-		content: self.description + self.wiki()
+	var myLatLng = {lat: data.lat, lng: data.lng};
+	self.marker = new google.maps.Marker({
+	    position: myLatLng,
+	    map: map,
+	    title: locations[i].name
+	  	});
+
+	self.marker.addListener('click', function() {
+		self.infowindow.open(map, self.marker);
+	});
+
+	$.getJSON("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + self.name + "&api-key=7334dd2f4e3de2342120fddbefbf0b37:11:74057023", function(articledata) {
+	    var numberForLoop = 0;
+	    if(articledata.response.docs.length < 3) {
+	    	numberForLoop = articledata.response.docs.length;
+	    } else { numberForLoop = 3; }
+	    
+		for (j = 0; j < numberForLoop; j++) {
+			self.wiki.push(articledata.response.docs[j]);
+			self.wikiString = self.wikiString + "<div>" + articledata.response.docs[j].snippet + "</div><br><a class=wikilink href=" + articledata.response.docs[j].web_url + ">Read more...</a>";
+		}
+
+		self.infowindow = new google.maps.InfoWindow({
+		content: "<h4>My Description</h4><div id=desc class=desc>" + self.description + "</div><h4>Articles from the New York Times</h4>" + self.wikiString		
 		});
-
-		var myLatLng = {lat: data.lat, lng: data.lng};
-		self.marker = new google.maps.Marker({
-		    position: myLatLng,
-		    map: map,
-		    title: locations[i].name
-		  	});
-		self.marker.addListener('click', function() {
-    	self.infowindow.open(map, self.marker);
-    		});
-
-	
+	});
 }
 
 
@@ -90,10 +102,7 @@ function viewModel() {
 	//create knockout array from the locations model
 	self.locationList = ko.observableArray([]);
 	for (i = 0; i < locations.length; i++) {
-		self.locationList.push(new Location(locations[i]));	
-		
-  
-
+		self.locationList.push(new Location(locations[i]));
 	}
 
 	//code to create the initial Google Map and markers
@@ -115,7 +124,7 @@ function viewModel() {
 	self.showDesc = function(clickedLocation) {
 
 		//Load articles from NYT
-		console.log(clickedLocation.wiki().length);
+		/*console.log(clickedLocation.wiki().length);
 		if (clickedLocation.wiki().length < 2) {
 			$.getJSON("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + clickedLocation.name + "&api-key=7334dd2f4e3de2342120fddbefbf0b37:11:74057023", function(data) {
 	      			clickedLocation.wiki.pop();
@@ -123,14 +132,18 @@ function viewModel() {
 	      				clickedLocation.wiki.push(data.response.docs[j]);
 	      			}
 	    	});
-		} 
+		} */
 		//set all locations to visible=false, then set the clickedLocation to visible=true
 		for (i = 0; i < locations.length; i++) {
 			self.locationList()[i].descVisible(false);
 			self.locationList()[i].marker.setAnimation(null);
+			self.locationList()[i].infowindow.close();
+
 		}
-		clickedLocation.descVisible(true);
+		//clickedLocation.descVisible(true);
 		clickedLocation.marker.setAnimation(google.maps.Animation.BOUNCE);
+		clickedLocation.infowindow.open(map, clickedLocation.marker);
+		setTimeout(function(){ clickedLocation.marker.setAnimation(null); }, 750);
 		
 	};
 
