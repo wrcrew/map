@@ -1,4 +1,5 @@
 // MODEL -->
+var currentLoc;
 
 var locations = [ 
 	{
@@ -47,6 +48,8 @@ var locations = [
 
 // Class to represent a location in the locations list
 
+var openwindow;
+
 function Location(data) {
 	var self = this;
 	self.name = data.name;
@@ -66,7 +69,14 @@ function Location(data) {
 	  	});
 
 	self.marker.addListener('click', function() {
+
+		console.log(openwindow);
+		if (openwindow) {
+        	openwindow.infowindow.close()
+        }
 		self.infowindow.open(map, self.marker);
+		openwindow = self;
+		
 	});
 
 	$.getJSON("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + self.name + "&api-key=7334dd2f4e3de2342120fddbefbf0b37:11:74057023", function(articledata) {
@@ -74,7 +84,7 @@ function Location(data) {
 	    if(articledata.response.docs.length < 3) {
 	    	numberForLoop = articledata.response.docs.length;
 	    } else { numberForLoop = 3; }
-	    
+
 		for (j = 0; j < numberForLoop; j++) {
 			self.wiki.push(articledata.response.docs[j]);
 			self.wikiString = self.wikiString + "<div>" + articledata.response.docs[j].snippet + "</div><br><a class=wikilink href=" + articledata.response.docs[j].web_url + ">Read more...</a>";
