@@ -88,16 +88,16 @@ function Location(data) {
 		}
 
 		self.infowindow = new google.maps.InfoWindow({
-		content: "<h4>My Description</h4><div id=desc class=desc>" + self.description + "</div><h4>Articles from the New York Times</h4>" + self.wikiString		
+			content: "<h4>My Description</h4><div id=desc class=desc>" + self.description + "</div><h4>Articles from the New York Times</h4>" + self.wikiString,
+			maxWidth: 250,
+			maxHeight: 350
 		});
 	});
 }
 
-var map;
-map = new google.maps.Map(document.getElementById('map'), {
-	    center: {lat: 40.681229, lng: -73.9781},
-	    zoom: 15
-	});
+
+
+
 
 // VIEW MODEL -->
 
@@ -146,7 +146,7 @@ function viewModel() {
 			self.locationList()[i].infowindow.close();
 
 		}
-		//clickedLocation.descVisible(true);
+		clickedLocation.descVisible(true);
 		clickedLocation.marker.setAnimation(google.maps.Animation.BOUNCE);
 		clickedLocation.infowindow.open(map, clickedLocation.marker);
 		setTimeout(function(){ clickedLocation.marker.setAnimation(null); }, 750);
@@ -190,6 +190,19 @@ function viewModel() {
 	
 }
 
-ko.applyBindings(new viewModel());
+var map;
+
+function initMap() {
+
+	map = new google.maps.Map(document.getElementById('map'), {
+	    center: {lat: 40.681229, lng: -73.9781},
+	    zoom: 15
+	});
+
+
+	ko.applyBindings(new viewModel());
+};
+
+
 
 

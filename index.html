@@ -8,6 +8,8 @@
 		      html, body { height: 100%; margin: 0; padding: 0; }
 		      #map { height: 100%; width: 100%; }
 		</style>	
+		<script async defer src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAm7LNFXCU_13JUTMZCVb3Y8GsPPEGrLbI&callback=initMap"></script>
+
 
 	</head>
 
@@ -28,7 +30,7 @@
 
 			    	</ul>
 				<div class="form">
-					Search:
+					Search:x`
 					<form data-bind="submit: $root.execSearch.bind($data, searchValue)">
 						<input type="text" id="searchValue">
 						<button type="submit">Submit</button>
@@ -37,28 +39,11 @@
 				</div>
 			</div>
 
-			<div data-bind="foreach: locationList" id="desc-list" class="description">
-				<div id="descItem" class="none" data-bind="visible: descVisible">
-					<h4>My Description</h4>
-					<div id="desc" class="desc" data-bind="text: description"></div>
-					<h4>Articles from the New York Times</h4>
-					<div data-bind="foreach: wiki">
-						<div id="wiki" class="wiki" data-bind="text: $data.snippet">
-						</div>
-							
-						<a class="wikilink" data-bind="attr: { href: $data.web_url }">
-								Read more...
-						</a>
-							
-					</div>
 
-				</div>
-			</div>
 		</div>
 
 
 
-		<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAm7LNFXCU_13JUTMZCVb3Y8GsPPEGrLbI"></script>
 		<script src="js/jquery-2.2.0.min.js"></script>
 		<script src="js/knockout-3.4.0.js"></script>
 		<script src="js/script2.js"></script>
