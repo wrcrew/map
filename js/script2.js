@@ -78,20 +78,29 @@ function Location(data) {
 
 	$.getJSON("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + self.name + "&api-key=7334dd2f4e3de2342120fddbefbf0b37:11:74057023", function(articledata) {
 	    var numberForLoop = 0;
-	    if(articledata.response.docs.length < 3) {
-	    	numberForLoop = articledata.response.docs.length;
-	    } else { numberForLoop = 3; }
 
-		for (j = 0; j < numberForLoop; j++) {
-			self.wiki.push(articledata.response.docs[j]);
-			self.wikiString = self.wikiString + "<div>" + articledata.response.docs[j].snippet + "</div><br><a class=wikilink href=" + articledata.response.docs[j].web_url + ">Read more...</a>";
-		}
+		    if(articledata.response.docs.length < 3) {
+		    	numberForLoop = articledata.response.docs.length;
+		    } else { numberForLoop = 3; }
 
+			for (j = 0; j < numberForLoop; j++) {
+				self.wiki.push(articledata.response.docs[j]);
+				self.wikiString = self.wikiString + "<div>" + articledata.response.docs[j].snippet + "</div><br><a class=wikilink href=" + articledata.response.docs[j].web_url + ">Read more...</a>";
+			}
+
+			var infowindowString = "<h4>My Description</h4><div id=desc class=desc>" + self.description + "</div><h4>Articles from the New York Times</h4>" + self.wikiString;
+			self.infowindow = new google.maps.InfoWindow({
+				content: infowindowString,
+				maxWidth: 250
+			});
+			
+				 
+	}).error(function() {
+		infowindowString = "<h4>My Description</h4><div id=desc class=desc>" + self.description + "</div><h6>Error loading articles from the New York Times.</h6>";
 		self.infowindow = new google.maps.InfoWindow({
-			content: "<h4>My Description</h4><div id=desc class=desc>" + self.description + "</div><h4>Articles from the New York Times</h4>" + self.wikiString,
-			maxWidth: 250,
-			maxHeight: 350
-		});
+				content: infowindowString,
+				maxWidth: 250
+			});
 	});
 }
 
@@ -193,13 +202,10 @@ function viewModel() {
 var map;
 
 function initMap() {
-
 	map = new google.maps.Map(document.getElementById('map'), {
 	    center: {lat: 40.681229, lng: -73.9781},
-	    zoom: 15
+	    zoom: 14
 	});
-
-
 	ko.applyBindings(new viewModel());
 };
 
