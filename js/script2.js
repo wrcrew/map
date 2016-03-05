@@ -69,14 +69,11 @@ function Location(data) {
 	  	});
 
 	self.marker.addListener('click', function() {
-
-		console.log(openwindow);
 		if (openwindow) {
         	openwindow.infowindow.close()
         }
 		self.infowindow.open(map, self.marker);
 		openwindow = self;
-		
 	});
 
 	$.getJSON("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + self.name + "&api-key=7334dd2f4e3de2342120fddbefbf0b37:11:74057023", function(articledata) {
@@ -95,7 +92,6 @@ function Location(data) {
 		});
 	});
 }
-
 
 var map;
 map = new google.maps.Map(document.getElementById('map'), {
@@ -160,9 +156,18 @@ function viewModel() {
 	//code for when a search is executed
 	self.execSearch = function() {
 
+		var toProperCase = function(str) {
+			return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});};
+
 		var searchValue = document.getElementById('searchValue').value;
+		var searchValuePC = toProperCase(searchValue);
+
+		console.log(searchValuePC);
+		console.log(self.locationList()[4].name.indexOf(searchValuePC));
+
 		for (i = 0; i < locations.length; i++) {
-			if (self.locationList()[i].name.search(searchValue) == -1) {
+			//console.log(self.locationList()[i].name.indexOf(searchValuePC));
+			if (self.locationList()[i].name.indexOf(searchValue) == -1 && self.locationList()[i].name.indexOf(searchValuePC) == -1) {
 				self.locationList()[i].listVisible(false);
 				self.locationList()[i].marker.setVisible(false);
 			} else 
@@ -180,6 +185,9 @@ function viewModel() {
 			self.locationList()[i].marker.setVisible(true);
 		}
 	};
+
+	
+	
 }
 
 ko.applyBindings(new viewModel());
