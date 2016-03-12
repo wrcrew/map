@@ -4,20 +4,9 @@
 		<title>neighborhood map 2</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" type="text/css" href="styles/style.css">
-		<style type="text/css">
-		      html, body { height: 100%; margin: 0; padding: 0; }
-		      #map { height: 100%; width: 100%; }
-		</style>	
 		<script async defer src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAm7LNFXCU_13JUTMZCVb3Y8GsPPEGrLbI&callback=initMap"></script>
-
-
 	</head>
-
-
-
-
 	<body>
-
 		<div id="map">			
 		</div>
 		<div id="container">
@@ -27,10 +16,9 @@
 			        	<div data-bind="css: { selected: descVisible }">
 			        		<li class="none" data-bind="text: name, click: $parent.showDesc, visible: listVisible"></li>
 			        	</div>
-
 			    	</ul>
 				<div class="form">
-					Search:x`
+					Search:
 					<form data-bind="submit: $root.execSearch.bind($data, searchValue)">
 						<input type="text" id="searchValue">
 						<button type="submit">Submit</button>
@@ -38,11 +26,7 @@
 					</form>
 				</div>
 			</div>
-
-
 		</div>
-
-
 
 		<script src="js/jquery-2.2.0.min.js"></script>
 		<script src="js/knockout-3.4.0.js"></script>

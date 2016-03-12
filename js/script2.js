@@ -1,6 +1,4 @@
 // MODEL -->
-var currentLoc;
-
 var locations = [ 
 	{
 		lat: 40.681412,
@@ -61,12 +59,16 @@ function Location(data) {
 	self.wiki = [];
 	self.wikiString = "";
 
+	// create each marker
+
 	var myLatLng = {lat: data.lat, lng: data.lng};
 	self.marker = new google.maps.Marker({
 	    position: myLatLng,
 	    map: map,
 	    title: locations[i].name
 	  	});
+
+	// make each marker clickable, and open its infowindow when clicked
 
 	self.marker.addListener('click', function() {
 		if (openwindow) {
@@ -75,6 +77,8 @@ function Location(data) {
 		self.infowindow.open(map, self.marker);
 		openwindow = self;
 	});
+
+	// load NYTimes articles for each location
 
 	$.getJSON("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + self.name + "&api-key=7334dd2f4e3de2342120fddbefbf0b37:11:74057023", function(articledata) {
 	    var numberForLoop = 0;
@@ -93,26 +97,20 @@ function Location(data) {
 				content: infowindowString,
 				maxWidth: 250
 			});
-			
-				 
 	}).error(function() {
 		infowindowString = "<h4>My Description</h4><div id=desc class=desc>" + self.description + "</div><h6>Error loading articles from the New York Times.</h6>";
 		self.infowindow = new google.maps.InfoWindow({
 				content: infowindowString,
 				maxWidth: 250
-			});
+		});
 	});
 }
-
-
-
 
 
 // VIEW MODEL -->
 
 function viewModel() {
 	var self = this;
-	//var map;
 
 	//create knockout array from the locations model
 	self.locationList = ko.observableArray([]);
@@ -120,40 +118,12 @@ function viewModel() {
 		self.locationList.push(new Location(locations[i]));
 	}
 
-	//code to create the initial Google Map and markers
-	/*map = new google.maps.Map(document.getElementById('map'), {
-	    center: {lat: 40.681229, lng: -73.9781},
-	    zoom: 15
-	});
-
-	for (i = 0; i < locations.length; i++) {
-		var myLatLng = {lat: locations[i].lat, lng: locations[i].lng};
-		var marker = new google.maps.Marker({
-		    position: myLatLng,
-		    map: map,
-		    title: locations[i].name
-		  	});
-	} */
-
 	//code to toggle whether an item's description should appear or not
 	self.showDesc = function(clickedLocation) {
-
-		//Load articles from NYT
-		/*console.log(clickedLocation.wiki().length);
-		if (clickedLocation.wiki().length < 2) {
-			$.getJSON("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + clickedLocation.name + "&api-key=7334dd2f4e3de2342120fddbefbf0b37:11:74057023", function(data) {
-	      			clickedLocation.wiki.pop();
-	      			for (j = 0; j < data.response.docs.length; j++) {
-	      				clickedLocation.wiki.push(data.response.docs[j]);
-	      			}
-	    	});
-		} */
-		//set all locations to visible=false, then set the clickedLocation to visible=true
 		for (i = 0; i < locations.length; i++) {
 			self.locationList()[i].descVisible(false);
 			self.locationList()[i].marker.setAnimation(null);
 			self.locationList()[i].infowindow.close();
-
 		}
 		clickedLocation.descVisible(true);
 		clickedLocation.marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -164,18 +134,13 @@ function viewModel() {
 
 	//code for when a search is executed
 	self.execSearch = function() {
-
 		var toProperCase = function(str) {
 			return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});};
 
 		var searchValue = document.getElementById('searchValue').value;
 		var searchValuePC = toProperCase(searchValue);
 
-		console.log(searchValuePC);
-		console.log(self.locationList()[4].name.indexOf(searchValuePC));
-
 		for (i = 0; i < locations.length; i++) {
-			//console.log(self.locationList()[i].name.indexOf(searchValuePC));
 			if (self.locationList()[i].name.indexOf(searchValue) == -1 && self.locationList()[i].name.indexOf(searchValuePC) == -1) {
 				self.locationList()[i].listVisible(false);
 				self.locationList()[i].marker.setVisible(false);
@@ -193,13 +158,12 @@ function viewModel() {
 			self.locationList()[i].listVisible(true); 
 			self.locationList()[i].marker.setVisible(true);
 		}
-	};
-
-	
-	
+	};	
 }
 
 var map;
+
+// initialize the map
 
 function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
