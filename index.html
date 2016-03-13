@@ -10,6 +10,9 @@
 		<div id="map">			
 		</div>
 		<div id="container">
+			<div id="menu" class="listmenu">
+				<a id="menulink" href="#"><img src="img/menu.png"></a>	
+			</div>
 			<div id="list" class="itemlist">
 					<h3>Locations</h3>
 					<ul data-bind="foreach: locationList" id="location-list">
@@ -31,6 +34,16 @@
 		<script src="js/jquery-2.2.0.min.js"></script>
 		<script src="js/knockout-3.4.0.js"></script>
 		<script src="js/script2.js"></script>
+
+
+
+<script type="text/javascript">
+ jQuery(function($){
+    	     $( '.listmenu' ).click(function(){
+    	     $('.itemlist').toggleClass('expand')
+    	     })
+        })
+</script>
 				
 	</body>
 </html>

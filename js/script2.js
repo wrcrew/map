@@ -1,4 +1,5 @@
 // MODEL -->
+
 var locations = [ 
 	{
 		lat: 40.681412,
@@ -74,7 +75,9 @@ function Location(data) {
 		if (openwindow) {
         	openwindow.infowindow.close()
         }
+        self.marker.setAnimation(google.maps.Animation.BOUNCE);
 		self.infowindow.open(map, self.marker);
+		setTimeout(function(){ self.marker.setAnimation(null); }, 750);
 		openwindow = self;
 	});
 
@@ -129,6 +132,7 @@ function viewModel() {
 		clickedLocation.marker.setAnimation(google.maps.Animation.BOUNCE);
 		clickedLocation.infowindow.open(map, clickedLocation.marker);
 		setTimeout(function(){ clickedLocation.marker.setAnimation(null); }, 750);
+		openwindow = clickedLocation;
 		
 	};
 
@@ -152,6 +156,7 @@ function viewModel() {
 		}
 	};
 
+	var menuVisible;
 	//code for when a search is cleared
 	self.clearSearch = function() {
 		for (i = 0; i < locations.length; i++) {
@@ -170,7 +175,9 @@ function initMap() {
 	    center: {lat: 40.681229, lng: -73.9781},
 	    zoom: 14
 	});
+
 	ko.applyBindings(new viewModel());
+
 };
 
 

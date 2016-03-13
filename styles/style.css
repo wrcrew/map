@@ -1,3 +1,19 @@
+@media only screen and (max-width: 500px) {
+    div.itemlist {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 500px) {
+    div.listmenu {
+        display: none;
+    }
+}
+
+.expand {
+ display: block !important; 
+}
+
 html, body { 
 	height: 100%; 
 	margin: 0; 
@@ -12,6 +28,14 @@ html, body {
 .hidden {
 	color: red;
 	font-size: 15pt;
+}
+
+div.listmenu {
+	background-color: white;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 2px;
 }
 
 div.description {
