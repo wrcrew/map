@@ -1,5 +1,7 @@
 // MODEL -->
 
+// a predetermined list of locations that the app will use
+
 var locations = [ 
 	{
 		lat: 40.681412,
@@ -45,9 +47,10 @@ var locations = [
 	
 ];
 
-// Class to represent a location in the locations list
-
+// a global variable to determine if there is any currently open infowindow
 var openwindow;
+
+// Class to represent a location in the locations list
 
 function Location(data) {
 	var self = this;
@@ -101,6 +104,7 @@ function Location(data) {
 				maxWidth: 250
 			});
 	}).error(function() {
+		// simple error handling in case the NYT API call returns an error
 		infowindowString = "<h4>My Description</h4><div id=desc class=desc>" + self.description + "</div><h6>Error loading articles from the New York Times.</h6>";
 		self.infowindow = new google.maps.InfoWindow({
 				content: infowindowString,
@@ -179,6 +183,10 @@ function initMap() {
 	ko.applyBindings(new viewModel());
 
 };
+
+function mapError() {
+	document.getElementById("map").innerHTML = "<center>Map failed to load, please reload the page</center>";
+}
 
 
 

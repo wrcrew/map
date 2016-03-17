@@ -57,6 +57,7 @@ var toggleHidden = function() {
 var viewModel = function() {
 	var self = this;
 	var map;
+	
 	this.locationList = ko.observableArray([]);
 	
 
