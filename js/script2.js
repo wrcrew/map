@@ -137,6 +137,17 @@ function viewModel() {
 		clickedLocation.infowindow.open(map, clickedLocation.marker);
 		setTimeout(function(){ clickedLocation.marker.setAnimation(null); }, 750);
 		openwindow = clickedLocation;
+
+		console.log(window.matchMedia("(min-width: 500px)").matches);
+
+		// logic to make the description list disappear when a location is clicked if the screen is too small
+		if (screen.width < 500) {
+  			// the screen is at least 500 pixels wide
+  			$('.itemlist').toggleClass('expand');
+  			console.log("click item");
+		} else {
+  			
+		}
 		
 	};
 
@@ -184,9 +195,13 @@ function initMap() {
 
 };
 
+// map error handling
+
 function mapError() {
 	document.getElementById("map").innerHTML = "<center>Map failed to load, please reload the page</center>";
 }
+
+
 
 
 
