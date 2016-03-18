@@ -1,5 +1,7 @@
 // MODEL -->
 
+
+
 // a predetermined list of locations that the app will use
 
 var locations = [ 
@@ -119,6 +121,8 @@ function Location(data) {
 function viewModel() {
 	var self = this;
 
+	self.filter = ko.observable("");
+
 	//create knockout array from the locations model
 	self.locationList = ko.observableArray([]);
 	for (i = 0; i < locations.length; i++) {
@@ -138,23 +142,37 @@ function viewModel() {
 		setTimeout(function(){ clickedLocation.marker.setAnimation(null); }, 750);
 		openwindow = clickedLocation;
 
-		console.log(window.matchMedia("(min-width: 500px)").matches);
-
+		
 		// logic to make the description list disappear when a location is clicked if the screen is too small
 		if (screen.width < 500) {
   			// the screen is at least 500 pixels wide
   			$('.itemlist').toggleClass('expand');
-  			console.log("click item");
-		} else {
+  			
+			} else {
   			
 		}
 		
 	};
 
-	//code for when a search is executed
+
+	
+	// filter items based on user input to the search box
+	self.filteredItems = ko.computed(function() {
+	    var filter = self.filter().toLowerCase();
+	    if (!filter) {
+	        return self.locationList();
+	    } else {
+	        return ko.utils.arrayFilter(self.locationList(), function(item) {
+	            return item.name.toLowerCase().indexOf(filter) !== -1;
+	        });
+	    }
+	}, viewModel);
+
+	/*code for when a search is executed
 	self.execSearch = function() {
+
 		var toProperCase = function(str) {
-			return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});};
+			return str.replace(/\w\S/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});};
 
 		var searchValue = document.getElementById('searchValue').value;
 		var searchValuePC = toProperCase(searchValue);
@@ -178,7 +196,7 @@ function viewModel() {
 			self.locationList()[i].listVisible(true); 
 			self.locationList()[i].marker.setVisible(true);
 		}
-	};	
+	};	*/
 }
 
 var map;
