@@ -1,7 +1,5 @@
 // MODEL -->
 
-
-
 // a predetermined list of locations that the app will use
 
 var locations = [ 
@@ -45,15 +43,12 @@ var locations = [
 		descVisible: false,
 		listVisible: true
 	}
-
-	
 ];
 
 // a global variable to determine if there is any currently open infowindow
 var openwindow;
 
 // Class to represent a location in the locations list
-
 function Location(data) {
 	var self = this;
 	self.name = data.name;
@@ -66,7 +61,6 @@ function Location(data) {
 	self.wikiString = "";
 
 	// create each marker
-
 	var myLatLng = {lat: data.lat, lng: data.lng};
 	self.marker = new google.maps.Marker({
 	    position: myLatLng,
@@ -75,19 +69,18 @@ function Location(data) {
 	  	});
 
 	// make each marker clickable, and open its infowindow when clicked
-
 	self.marker.addListener('click', function() {
 		if (openwindow) {
-        	openwindow.infowindow.close()
+        	openwindow.infowindow.close();
         }
         self.marker.setAnimation(google.maps.Animation.BOUNCE);
+        map.panTo(self.marker.getPosition());
 		self.infowindow.open(map, self.marker);
 		setTimeout(function(){ self.marker.setAnimation(null); }, 750);
 		openwindow = self;
 	});
 
 	// load NYTimes articles for each location
-
 	$.getJSON("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + self.name + "&api-key=7334dd2f4e3de2342120fddbefbf0b37:11:74057023", function(articledata) {
 	    var numberForLoop = 0;
 
@@ -139,6 +132,7 @@ function viewModel() {
 		clickedLocation.descVisible(true);
 		clickedLocation.marker.setAnimation(google.maps.Animation.BOUNCE);
 		clickedLocation.infowindow.open(map, clickedLocation.marker);
+		map.panTo(clickedLocation.marker.getPosition());
 		setTimeout(function(){ clickedLocation.marker.setAnimation(null); }, 750);
 		openwindow = clickedLocation;
 
@@ -147,62 +141,34 @@ function viewModel() {
 		if (screen.width < 500) {
   			// the screen is at least 500 pixels wide
   			$('.itemlist').toggleClass('expand');
-  			
 			} else {
-  			
 		}
-		
 	};
 
-
-	
 	// filter items based on user input to the search box
 	self.filteredItems = ko.computed(function() {
 	    var filter = self.filter().toLowerCase();
 	    if (!filter) {
+	        for (i = 0; i < self.locationList().length; i++) {
+	        	self.locationList()[i].marker.setVisible(true);
+	        }
 	        return self.locationList();
 	    } else {
 	        return ko.utils.arrayFilter(self.locationList(), function(item) {
+	            if (item.name.toLowerCase().indexOf(filter) == -1) {
+	            	item.marker.setVisible(false);
+	            } else {
+	            	item.marker.setVisible(true);
+	            }
 	            return item.name.toLowerCase().indexOf(filter) !== -1;
 	        });
 	    }
 	}, viewModel);
-
-	/*code for when a search is executed
-	self.execSearch = function() {
-
-		var toProperCase = function(str) {
-			return str.replace(/\w\S/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});};
-
-		var searchValue = document.getElementById('searchValue').value;
-		var searchValuePC = toProperCase(searchValue);
-
-		for (i = 0; i < locations.length; i++) {
-			if (self.locationList()[i].name.indexOf(searchValue) == -1 && self.locationList()[i].name.indexOf(searchValuePC) == -1) {
-				self.locationList()[i].listVisible(false);
-				self.locationList()[i].marker.setVisible(false);
-			} else 
-				{ 
-				self.locationList()[i].listVisible(true);
-				self.locationList()[i].marker.setVisible(true);
-				}
-		}
-	};
-
-	var menuVisible;
-	//code for when a search is cleared
-	self.clearSearch = function() {
-		for (i = 0; i < locations.length; i++) {
-			self.locationList()[i].listVisible(true); 
-			self.locationList()[i].marker.setVisible(true);
-		}
-	};	*/
 }
 
 var map;
 
 // initialize the map
-
 function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
 	    center: {lat: 40.681229, lng: -73.9781},
@@ -211,10 +177,9 @@ function initMap() {
 
 	ko.applyBindings(new viewModel());
 
-};
+}
 
 // map error handling
-
 function mapError() {
 	document.getElementById("map").innerHTML = "<center>Map failed to load, please reload the page</center>";
 }
